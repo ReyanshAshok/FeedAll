@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import DonationABI from "../Contracts/DonationContract.json";
 
@@ -17,16 +17,27 @@ function DonorDashboard() {
         setAccount(acc);
     }
 
-    function getContract() {
+ const loadDonation = useCallback(async () => {
+    try {
+        const contract = await getContract();
+        const data = await contract.getAllDonations();
+        setDonations(data);
+    } catch (error) {
+        console.error(error);
+        alert("Error loading donations");
+    }
+}, []);
+
+    async function getContract() {
         const provider = new ethers.BrowserProvider(window.ethereum); // ethers v6
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
         return new ethers.Contract(CONTRACT_ADDRESS, DonationABI.abi, signer);
     }
 
     async function createDonation(e) {
         e.preventDefault();
         try {
-            const contract = getContract();
+            const contract = await getContract();
             const expiryTimestamp = Math.floor(new Date(expiry).getTime() / 1000);
             const tx = await contract.createDonation(foodType, parseInt(quantity), expiryTimestamp, "Wallah hi");
             await tx.wait();
@@ -38,20 +49,10 @@ function DonorDashboard() {
         }
     }
 
-    async function loadDonation() {
-        try {
-            const contract = getContract();
-            const data = await contract.getAllDonations(); 
-            setDonations(data);
-        } catch (error) {
-            console.error(error);
-            alert("Error loading donations");
-        }
-    }
 
-    useEffect(() => {
-        if (account) loadDonation();
-    }, [account]);
+useEffect(() => {
+    if (account) loadDonation();
+}, [account, loadDonation]);
 
     return (
         <div>

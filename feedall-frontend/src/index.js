@@ -4,12 +4,14 @@ import './index.css';
 import App from './App';
 import DonorDashboard from './components/donorDashboard.js';
 import reportWebVitals from './reportWebVitals';
+import NgoDashboard from './components/NgoDashboard.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
     <DonorDashboard />
+    <NgoDashboard />
   </React.StrictMode>
 );
 
