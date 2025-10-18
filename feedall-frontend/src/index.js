@@ -1,21 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import DonorDashboard from './components/donorDashboard.js';
-import reportWebVitals from './reportWebVitals';
-import NgoDashboard from './components/NgoDashboard.js';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import App from "./App";
+import DonorDashboard from "./components/donorDashboard";
+import NgoDashboard from "./components/NgoDashboard";
+import reportWebVitals from "./reportWebVitals";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
-    <DonorDashboard />
-    <NgoDashboard />
+    {/* Wrap your app in BrowserRouter to enable routing */}
+    <BrowserRouter>
+      <Routes>
+        {/* Home Page */}
+        <Route path="/" element={<App />} />
+
+        {/* Donor Dashboard Page */}
+        <Route path="/donor" element={<DonorDashboard />} />
+
+        {/* NGO Dashboard Page */}
+        <Route path="/ngo" element={<NgoDashboard />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
