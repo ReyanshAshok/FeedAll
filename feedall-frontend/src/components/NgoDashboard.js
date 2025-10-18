@@ -32,9 +32,9 @@ const NgoDashboard = () => {
   // Load all dashboard data
   async function loadDashboard() {
     try {
-      const donationContract = getContract(DONATION_ADDRESS, DonationABI);
-      const requestContract = getContract(REQUEST_ADDRESS, RequestABI);
-      const transportContract = getContract(TRANSPORT_ADDRESS, TransportABI);
+      const donationContract = await getContract(DONATION_ADDRESS, DonationABI);
+      const requestContract = await getContract(REQUEST_ADDRESS, RequestABI);
+      const transportContract = await getContract(TRANSPORT_ADDRESS, TransportABI);
 
       const allDonations = await donationContract.getAllDonations();
       const allRequests = await requestContract.getAllRequests();

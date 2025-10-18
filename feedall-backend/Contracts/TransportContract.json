@@ -1,7 +1,4 @@
 {
-  "_format": "hh-sol-artifact-1",
-  "contractName": "TransportContract",
-  "sourceName": "contracts/TransportContract.sol",
   "abi": [
     {
       "inputs": [

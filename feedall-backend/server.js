@@ -44,13 +44,15 @@ const donationContract = new ethers.Contract(
 // Listen for DonationCreated event
 donationContract.on(
   "DonationCreated",
-  async (donationId, donor, foodType, quantity, expiryTimestamp, ipfsHash, event) => {
-    console.log(`🟢 New Donation detected! ID: ${donationId.toString()}`);
+  async (donationId, donor, restaurantName, restaurantLocation, foodType, quantity, expiryTimestamp, ipfsHash, event) => {
+     console.log(`🟢 New Donation detected! ${restaurantName} at ${restaurantLocation}`);
 
     try {
       await Donation.create({
         donationId: Number(donationId),
         donor,
+        restaurantName,
+        restaurantLocation,
         foodType,
         quantity: Number(quantity),
         expiryTimestamp: Number(expiryTimestamp),

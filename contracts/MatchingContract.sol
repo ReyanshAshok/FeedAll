@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 interface IDonationContract {
     function getDonation(uint donationId) external view returns (
-        address, string memory, uint, uint, string memory, uint
+        address, string memory,string memory,string memory, uint, uint, string memory, uint
     );
     function donations(uint) external view returns (
         address, string memory, uint, uint, string memory, uint

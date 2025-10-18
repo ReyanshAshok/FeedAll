@@ -4,10 +4,12 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 contract DonationContract is ERC2771Context {
-    enum Status {Available, Matched, InTransit, Delivered}
+    enum Status { Available, Matched, InTransit, Delivered }
 
     struct Donation {
         address donor;
+        string restaurantName;
+        string restaurantLocation;
         string foodType;
         uint quantity;
         uint expiryTimestamp;
@@ -20,6 +22,8 @@ contract DonationContract is ERC2771Context {
     event DonationCreated(
         uint indexed donationId,
         address indexed donor,
+        string restaurantName,
+        string restaurantLocation,
         string foodType,
         uint quantity,
         uint expiryTimestamp,
@@ -29,18 +33,22 @@ contract DonationContract is ERC2771Context {
     constructor(address trustedForwarder) ERC2771Context(trustedForwarder) {}
 
     function createDonation(
+        string memory restaurantName,
+        string memory restaurantLocation,
         string memory foodType,
         uint quantity,
         uint expiryTimestamp,
         string memory ipfsHash
     ) public returns (uint) {
-        require(quantity > 2, "Quantity must be greater than 2 Kilograms");
-        require(expiryTimestamp > block.timestamp + 5 days, "Expiration Date must be at least 5 days ahead");
+        // require(quantity > 2, "Quantity must be greater than 2 Kilograms");
+        // require(expiryTimestamp > block.timestamp + 5 days, "Expiration Date must be at least 5 days ahead");
 
         address sender = _msgSender();
 
         Donation memory newDonation = Donation({
             donor: sender,
+            restaurantName: restaurantName,
+            restaurantLocation: restaurantLocation,
             foodType: foodType,
             quantity: quantity,
             expiryTimestamp: expiryTimestamp,
@@ -54,6 +62,8 @@ contract DonationContract is ERC2771Context {
         emit DonationCreated(
             donationId,
             sender,
+            restaurantName,
+            restaurantLocation,
             foodType,
             quantity,
             expiryTimestamp,
@@ -77,7 +87,7 @@ contract DonationContract is ERC2771Context {
         donations[donationId].status = newStatus;
     }
 
-    // Required overrides for meta-transactions
+    // Meta-tx overrides
     function _msgSender()
         internal
         view
