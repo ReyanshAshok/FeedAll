@@ -14,9 +14,19 @@ function DonorDashboard() {
     const [restaurantLocation, setRestaurantLocation] = useState("");
 
     async function connectWallet() {
-        if (!window.ethereum) return alert("Please install MetaMask");  
-        const [acc] = await window.ethereum.request({ method: "eth_requestAccounts" });
-        setAccount(acc);
+        if (typeof window === "undefined" || !window.ethereum) {
+            return alert("Install MetaMask!");
+        }
+        try {
+            await window.ethereum.request({ method: "eth_requestAccounts" });
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner(); // now safe
+            const accounts = await signer.getAddress();
+            setAccount(accounts);
+        } catch (err) {
+            console.error("Wallet connect error:", err);
+            alert("Failed to connect wallet");
+        }
     }
 
     const loadDonation = useCallback(async () => {
@@ -31,8 +41,11 @@ function DonorDashboard() {
     }, []);
 
     async function getContract() {
+        if (typeof window === "undefined" || !window.ethereum) {
+            throw new Error("No injected wallet found");
+        }
         const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
+        const signer = await provider.getSigner(); // won't be null if window.ethereum present
         return new ethers.Contract(CONTRACT_ADDRESS, DonationABI.abi, signer);
     }
 

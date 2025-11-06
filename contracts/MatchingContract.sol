@@ -8,7 +8,7 @@ interface IDonationContract {
         address, string memory,string memory,string memory, uint, uint, string memory, uint
     );
     function donations(uint) external view returns (
-        address, string memory, uint, uint, string memory, uint
+        address, string memory,string memory,string memory, uint, uint, string memory, uint
     );
     function updateStatus(uint donationId, uint status) external;
 }

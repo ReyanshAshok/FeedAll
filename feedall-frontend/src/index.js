@@ -7,6 +7,7 @@ import App from "./App";
 import DonorDashboard from "./components/donorDashboard";
 import NgoDashboard from "./components/NgoDashboard";
 import reportWebVitals from "./reportWebVitals";
+import TransportContractUI from "./components/TransportDashBoard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,6 +23,9 @@ root.render(
 
         {/* NGO Dashboard Page */}
         <Route path="/ngo" element={<NgoDashboard />} />
+
+        {/* Transport Dashboard Page */}
+        <Route path ="/transport" element={<TransportContractUI/>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
